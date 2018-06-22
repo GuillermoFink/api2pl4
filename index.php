@@ -46,7 +46,11 @@ $app->get('[/]', function (Request $request, Response $response) {
 
 $app->post('/login', function (Request $request, Response $response) {
     $datos = $request->getParsedBody();
-    return Usuario::Login($datos["mail"],$datos["password"]);
+    $mail = $datos["mail"];
+    $pw = $datos["password"];
+    $response->write(Usuario::Login($mail,$pw));
+    //$response->write($pw);
+    return $response;
 });
 
 

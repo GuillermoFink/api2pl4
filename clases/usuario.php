@@ -18,7 +18,7 @@ class Usuario{
         if ($consulta->execute()){
             $datos = $consulta->fetchAll(PDO::FETCH_ASSOC);
             if (isset($datos[0]['nombre'])){
-                $datos=json_encode($datos); 
+                //$datos=json_encode($datos); 
                 return AutentificadorJWT::CrearToken($datos);
             }
         }
