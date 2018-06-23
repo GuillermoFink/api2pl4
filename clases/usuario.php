@@ -24,5 +24,20 @@ class Usuario{
         }
         return $rta;
     }
+    public static function AltaUsuario($nombre,$apellido,$mail,$password,$tipo){
+        $rta = "error";
+        $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+        $consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO `usuarios`(`nombre`, `apellido`, `mail`, `password`, `tipo`) VALUES (:nombre, :apellido, :mail, :password, :tipo)");
+        $consulta->bindValue(':nombre',$nombre);
+        $consulta->bindValue(':apellido',$apellido);
+        $consulta->bindValue(':mail',$mail);
+        $consulta->bindValue(':password',$password);
+        $consulta->bindValue(':tipo',$tipo);
+
+        if ($consulta->execute()){
+            $rta = "ok";
+        }
+        return $rta;
+    }
 }
 ?>

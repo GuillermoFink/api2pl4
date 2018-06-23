@@ -7,11 +7,7 @@ require_once './clases/AccesoDatos.php';
 require_once './clases/AutentificadorJWT.php';
 
 require_once './clases/usuario.php';
-require_once './clases/chofer.php';
-require_once './clases/cliente.php';
-require_once './clases/encargado.php';
-require_once './clases/vehiculo.php';
-require_once './clases/viaje.php';
+require_once './clases/mascota.php';
 
 $config['displayErrorDetails'] = true;
 $config['addContentLengthHeader'] = false;
@@ -44,13 +40,54 @@ $app->get('[/]', function (Request $request, Response $response) {
 
 });
 
+$app->get('/traerTodasLasMascotas', function (Request $request, Response $response) {
+    
+    $newResponse = $response->withJson(Mascota::TraerTodasLasMascotas());
+    return $newResponse;
+});
+
 $app->post('/login', function (Request $request, Response $response) {
     $datos = $request->getParsedBody();
     $mail = $datos["mail"];
     $pw = $datos["password"];
-    $response->write(Usuario::Login($mail,$pw));
-    //$response->write($pw);
-    return $response;
+    $newResponse = $response->withJson(Usuario::Login($mail,$pw));
+    return $newResponse;
+});
+
+$app->post('/altaUsuario', function (Request $request, Response $response) {
+    $datos = $request->getParsedBody();
+    $nombre = $datos["nombre"];
+    $apellido = $datos["apellido"];
+    $mail = $datos["mail"];
+    $password = $datos["password"];
+    $tipo = $datos["tipo"];
+    $newResponse = $response->withJson(Usuario::AltaUsuario($nombre,$apellido,$mail,$password,$tipo));
+    return $newResponse;
+});
+
+$app->post('/traerMascotaPorId', function (Request $request, Response $response) {
+    $datos = $request->getParsedBody();
+    $id = $datos["id_mascota"];
+    $newResponse = $response->withJson(Mascota::TraerMascotaPorId($id));
+    return $newResponse;
+});
+
+$app->post('/traerMascotasPorDuenio', function (Request $request, Response $response) {
+    $datos = $request->getParsedBody();
+    $id = $datos["id_usuario"];
+    $newResponse = $response->withJson(Mascota::TraerMascotasPorDuenio($id));
+    return $newResponse;
+});
+
+$app->post('/agregarMascota', function (Request $request, Response $response) {
+    $datos = $request->getParsedBody();
+    $id = $datos["id_usuario"];
+    $raza = $datos["raza"];
+    $color = $datos["color"];
+    $edad = $datos["edad"];
+    $tipo = $datos["tipo"];
+    $newResponse = $response->withJson(Mascota::AgregarMascota($id,$raza,$color,$edad,$tipo));
+    return $newResponse;
 });
 
 
