@@ -8,6 +8,7 @@ require_once './clases/AutentificadorJWT.php';
 
 require_once './clases/usuario.php';
 require_once './clases/mascota.php';
+require_once './clases/turnos.php';
 
 $config['displayErrorDetails'] = true;
 $config['addContentLengthHeader'] = false;
@@ -90,6 +91,21 @@ $app->post('/agregarMascota', function (Request $request, Response $response) {
     return $newResponse;
 });
 
+$app->post('/agregarTurno', function (Request $request, Response $response) {
+    $datos = $request->getParsedBody();
+    $id_mascota = $datos["id_mascota"];
+    $fecha = $datos["fecha"];
+    $estado = $datos["estado"];
+    $descripcion = $datos["descripcion"];
+    $newResponse = $response->withJson(Turnos::AgregarTurno($id_mascota,$fecha,$estado,$descripcion));
+    return $newResponse;
+});
+$app->post('/traerMisTurnos', function (Request $request, Response $response) {
+    $datos = $request->getParsedBody();
+    $id_usuario = $datos["id_usuario"];
+    $newResponse = $response->withJson(Turnos::TraerMisTurnos($id_usuario));
+    return $newResponse;
+});
 
 $app->run();
 ?>

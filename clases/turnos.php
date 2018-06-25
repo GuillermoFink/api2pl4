@@ -1,24 +1,38 @@
 <?php
-class Usuario{
+class Turnos{
 
     public $id;
     public $id_mascota;
     public $fecha;
     public $estado;
+    public $descripcion;
 
 
-    public static function Login($mail, $password){
+    public static function AgregarTurno($id_mascota, $fecha, $estado,$descripcion){
         $rta = "error";
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-        $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * FROM usuarios WHERE mail=:mail AND password=:password");
-        $consulta->bindValue(':mail',$mail);
-        $consulta->bindValue(':password', $password);
+        $consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO `turnos`(`id_mascota`, `fecha`, `estado`, `descripcion`) VALUES (:id_mascota,:fecha,1,:descripcion)");
+        $consulta->bindValue(':id_mascota',$id_mascota);
+        $consulta->bindValue(':fecha',$fecha);
+        $consulta->bindValue(':descripcion',$descripcion);
         if ($consulta->execute()){
-            $datos = $consulta->fetchAll(PDO::FETCH_ASSOC);
-            if (isset($datos[0]['nombre'])){
-                //$datos=json_encode($datos); 
-                return AutentificadorJWT::CrearToken($datos);
-            }
+            $rta = "ok";
+        }
+        return $rta;
+    }
+
+    public static function TraerMisTurnos($id_usuario){
+        $rta = "error";
+        $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+        $consulta = $objetoAccesoDato->RetornarConsulta("SELECT t.id, t.id_mascota, m.raza, m.color, t.fecha,t.estado,t.descripcion
+                                                        FROM turnos AS t, mascotas AS m, usuarios AS u
+                                                        WHERE m.id = t.id_mascota
+                                                        AND m.id_usuario = :id_usuario
+                                                        GROUP BY t.id
+                                                        ORDER BY t.fecha ASC");
+        $consulta->bindValue(':id_usuario',$id_usuario);
+        if ($consulta->execute()){
+            $rta = $consulta->fetchAll(PDO::FETCH_ASSOC);
         }
         return $rta;
     }
