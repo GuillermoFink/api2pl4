@@ -39,5 +39,30 @@ class Usuario{
         }
         return $rta;
     }
+
+    public static function TraerTodosLosUsuarios(){
+        $rta = "error";
+        $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+        $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * FROM usuarios");
+        if($consulta->execute()){
+            $rta = $consulta->fetchAll(PDO::FETCH_ASSOC);
+        }
+        return $rta;
+    }
+
+    public static function ModificarUsuario($id,$nombre,$apellido,$mail,$tipo){
+        $rta = "error";
+        $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+        $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE `usuarios` SET `nombre`=:nombre,`apellido`=:apellido,`mail`=:mail,`tipo`=:tipo WHERE id=:id");
+        $consulta->bindValue(':id',$id);
+        $consulta->bindValue(':nombre',$nombre);
+        $consulta->bindValue(':apellido',$apellido);
+        $consulta->bindValue(':mail',$mail);
+        $consulta->bindValue(':tipo',$tipo);
+        if($consulta->execute()){
+            $rta = "ok";
+        }
+        return $rta;
+    }
 }
 ?>

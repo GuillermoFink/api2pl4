@@ -56,5 +56,20 @@ class Mascota{
         }
         return $rta;
     }
+
+    public static function ModificarMascota($id,$raza,$color,$edad,$tipo){
+        $rta = "error";
+        $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+        $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE `mascotas` SET `raza`=:raza,`color`=:color,`edad`=:edad,`tipo`=:tipo WHERE id = :id");
+        $consulta->bindValue(':id',$id);
+        $consulta->bindValue(':raza',$raza);
+        $consulta->bindValue(':color',$color);
+        $consulta->bindValue(':edad',$edad);
+        $consulta->bindValue(':tipo',$tipo);
+        if ($consulta->execute()){
+            $rta = "ok";
+        }
+        return $rta;
+    }
 }
 ?>
