@@ -45,19 +45,19 @@ $app->get('/traerTodasLasMascotas', function (Request $request, Response $respon
     
     $newResponse = $response->withJson(Mascota::TraerTodasLasMascotas());
     return $newResponse;
-});
+})->add($mdAuth);
 
 $app->get('/traerTodosLosTurnos', function (Request $request, Response $response) {
     
     $newResponse = $response->withJson(Turnos::TraerTodosLosTurnos());
     return $newResponse;
-});
+})->add($mdAuth);
 
 $app->get('/traerTodosLosUsuarios', function (Request $request, Response $response) {
     
     $newResponse = $response->withJson(Usuario::TraerTodosLosUsuarios());
     return $newResponse;
-});
+})->add($mdAuth);
 
 $app->post('/login', function (Request $request, Response $response) {
     $datos = $request->getParsedBody();
@@ -87,21 +87,21 @@ $app->post('/modificarUsuario', function (Request $request, Response $response) 
     $tipo = $datos["tipo"];
     $newResponse = $response->withJson(Usuario::ModificarUsuario($id,$nombre,$apellido,$mail,$tipo));
     return $newResponse;
-});
+})->add($mdAuth);
 
 $app->post('/traerMascotaPorId', function (Request $request, Response $response) {
     $datos = $request->getParsedBody();
     $id = $datos["id_mascota"];
     $newResponse = $response->withJson(Mascota::TraerMascotaPorId($id));
     return $newResponse;
-});
+})->add($mdAuth);;
 
 $app->post('/traerMascotasPorDuenio', function (Request $request, Response $response) {
     $datos = $request->getParsedBody();
     $id = $datos["id_usuario"];
     $newResponse = $response->withJson(Mascota::TraerMascotasPorDuenio($id));
     return $newResponse;
-});
+})->add($mdAuth);;
 
 $app->post('/agregarMascota', function (Request $request, Response $response) {
     $datos = $request->getParsedBody();
@@ -112,7 +112,7 @@ $app->post('/agregarMascota', function (Request $request, Response $response) {
     $tipo = $datos["tipo"];
     $newResponse = $response->withJson(Mascota::AgregarMascota($id,$raza,$color,$edad,$tipo));
     return $newResponse;
-});
+})->add($mdAuth);
 
 $app->post('/modificarMascota', function (Request $request, Response $response) {
     $datos = $request->getParsedBody();
@@ -123,7 +123,7 @@ $app->post('/modificarMascota', function (Request $request, Response $response) 
     $tipo = $datos["tipo"];
     $newResponse = $response->withJson(Mascota::ModificarMascota($id,$raza,$color,$edad,$tipo));
     return $newResponse;
-});
+})->add($mdAuth);
 
 $app->post('/agregarTurno', function (Request $request, Response $response) {
     $datos = $request->getParsedBody();
@@ -133,7 +133,7 @@ $app->post('/agregarTurno', function (Request $request, Response $response) {
     $descripcion = $datos["descripcion"];
     $newResponse = $response->withJson(Turnos::AgregarTurno($id_mascota,$fecha,$estado,$descripcion));
     return $newResponse;
-});
+})->add($mdAuth);
 $app->post('/actualizarTurno', function (Request $request, Response $response) {
     $datos = $request->getParsedBody();
     $id = $datos["id"];
@@ -141,13 +141,13 @@ $app->post('/actualizarTurno', function (Request $request, Response $response) {
     $descripcion = $datos["descripcion"];
     $newResponse = $response->withJson(Turnos::ModificarTurno($id,$estado,$descripcion));
     return $newResponse;
-});
+})->add($mdAuth);
 $app->post('/traerMisTurnos', function (Request $request, Response $response) {
     $datos = $request->getParsedBody();
     $id_usuario = $datos["id_usuario"];
     $newResponse = $response->withJson(Turnos::TraerMisTurnos($id_usuario));
     return $newResponse;
-});
+})->add($mdAuth);
 
 $app->run();
 ?>
